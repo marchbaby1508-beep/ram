@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeConvert - Smart Currency Converter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">💱</span>
+                    <h1>WeConvert</h1>
+                </div>
+                
+                <nav class="nav-links">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#converter" class="nav-link">Converter</a>
+                </nav>
+                
+                <div class="theme-toggle" id="themeToggle">
+                    <input type="checkbox" id="darkModeCheckbox" class="checkbox">
+                    <label for="darkModeCheckbox" class="toggle-label">
+                        <span class="icon-sun">☀️</span>
+                        <span class="icon-moon">🌙</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <canvas id="particleCanvas"></canvas>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Smart Currency Conversion Made Simple</h2>
+                <p class="hero-subtitle">Real-time exchange rates with advanced analytics and offline support</p>
+                <button class="cta-button" onclick="document.getElementById('converter').scrollIntoView({behavior: 'smooth'})">
+                    Start Converting
+                    <span class="button-ripple"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Converter Section -->
+    <section id="converter" class="converter-section">
+        <div class="container">
+            <h2 class="section-title">Live Currency Converter</h2>
+            
+            <div class="converter-container">
+                <!-- Single Conversion -->
+                <div class="conversion-card">
+                    <div class="conversion-header">
+                        <h3>Quick Conversion</h3>
+                        <span class="mode-indicator" id="modeIndicator">Single</span>
+                    </div>
+
+                    <div class="conversion-inputs">
+                        <div class="input-group">
+                            <label for="amount">Amount</label>
+                            <input 
+                                type="number" 
+                                id="amount" 
+                                class="amount-input" 
+                                placeholder="0.00" 
+                                value="1"
+                                min="0"
+                                step="0.01"
+                            >
+                        </div>
+
+                        <div class="currency-selection">
+                            <div class="currency-group">
+                                <label for="fromCurrency">From</label>
+                                <div class="dropdown-container">
+                                    <select id="fromCurrency" class="currency-select">
+                                        <option value="USD">🇺🇸 USD - US Dollar</option>
+                                    </select>
+                                    <span class="flag" id="fromFlag">🇺🇸</span>
+                                </div>
+                            </div>
+
+                            <button class="swap-button" id="swapButton" title="Swap currencies">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+
+                            <div class="currency-group">
+                                <label for="toCurrency">To</label>
+                                <div class="dropdown-container">
+                                    <select id="toCurrency" class="currency-select">
+                                        <option value="EUR">🇪🇺 EUR - Euro</option>
+                                    </select>
+                                    <span class="flag" id="toFlag">🇪🇺</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-container">
+                        <div class="result-item">
+                            <span class="result-label">Amount</span>
+                            <div class="result-display">
+                                <span class="amount-display" id="inputAmountDisplay">1.00</span>
+                                <span class="currency-code" id="inputCurrencyDisplay">USD</span>
+                            </div>
+                        </div>
+
+                        <div class="equals-sign">=</div>
+
+                        <div class="result-item">
+                            <span class="result-label">Converted</span>
+                            <div class="result-display">
+                                <span class="amount-display" id="outputAmount">0.00</span>
+                                <span class="currency-code" id="outputCurrencyDisplay">EUR</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conversion-rate">
+                        <span id="rateDisplay">Loading rate...</span>
+                        <span class="rate-timestamp" id="rateTimestamp"></span>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn" id="favoriteBtn" title="Add to favorites">
+                            <i class="far fa-star"></i> Favorite
+                        </button>
+                        <button class="action-btn" id="copyBtn" title="Copy result">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button class="action-btn" id="shareBtn" title="Share conversion">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Multi-Currency Comparison -->
+                <div class="multi-conversion-card">
+                    <div class="multi-header">
+                        <h3>Multi-Currency View</h3>
+                        <button class="toggle-btn" id="toggleMulti" title="Toggle multi-currency comparison">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+
+                    <div class="multi-conversion-container" id="multiContainer" style="display: none;">
+                        <div class="multi-input">
+                            <input 
+                                type="number" 
+                                id="multiAmount" 
+                                class="amount-input" 
+                                placeholder="Enter amount" 
+                                value="1"
+                                min="0"
+                                step="0.01"
+                            >
+                            <select id="multiFromCurrency" class="currency-select">
+                                <option value="USD">🇺🇸 USD</option>
+                            </select>
+                        </div>
+                        <div class="multi-results" id="multiResults"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites & History -->
+            <div class="secondary-features">
+                <div class="favorites-card">
+                    <h3><i class="fas fa-star"></i> Favorite Conversions</h3>
+                    <div class="favorites-list" id="favoritesList">
+                        <p class="empty-state">No favorites yet. Add some!</p>
+                    </div>
+                </div>
+
+                <div class="history-card">
+                    <h3><i class="fas fa-history"></i> Recent Conversions</h3>
+                    <div class="history-list" id="historyList">
+                        <p class="empty-state">No conversion history yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-section">
+        <div class="container">
+            <h2 class="section-title">Exchange Rate Analytics</h2>
+            
+            <div class="analytics-container">
+                <div class="chart-card">
+                    <h3>7-Day Trend</h3>
+                    <div class="chart-controls">
+                        <select id="trendCurrency" class="chart-select">
+                            <option value="EURUSD">EUR/USD</option>
+                            <option value="GBPUSD">GBP/USD</option>
+                            <option value="JPYUSD">JPY/USD</option>
+                        </select>
+                    </div>
+                    <canvas id="trendChart" class="chart"></canvas>
+                    <div class="chart-legend" id="chartLegend"></div>
+                </div>
+
+                <div class="strength-card">
+                    <h3>Currency Strength</h3>
+                    <div class="strength-list" id="strengthList">
+                        <div class="strength-item">
+                            <span class="strength-name">USD</span>
+                            <div class="strength-bar">
+                                <div class="strength-fill" style="width: 85%"></div>
+                            </div>
+                            <span class="strength-value">85%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="best-time-card">
+                    <h3>Best Time to Exchange</h3>
+                    <div class="best-time-info" id="bestTimeInfo">
+                        <div class="badge badge-good">🟢 Good Rate</div>
+                        <p>Last updated: <span id="bestTimeUpdate">loading...</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Why Choose WeConvert?</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time Rates</h3>
+                    <p>Get live exchange rates updated every 60 seconds from trusted sources</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Auto Detection</h3>
+                    <p>Automatically detects your location and suggests relevant currencies</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Fully Responsive</h3>
+                    <p>Perfect experience on mobile, tablet, and desktop devices</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌙</div>
+                    <h3>Dark/Light Mode</h3>
+                    <p>Smooth theme switching with automatic detection of system preference</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>Offline Mode</h3>
+                    <p>Works offline using your last saved exchange rates</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Advanced Analytics</h3>
+                    <p>7-day trends, currency strength, and exchange rate predictions</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Save Favorites</h3>
+                    <p>Mark your most used currency pairs for quick access</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Conversion History</h3>
+                    <p>Track all your recent conversions with timestamps</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>WeConvert</h4>
+                    <p>Smart currency conversion made simple</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#converter">Converter</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 WeConvert. All rights reserved. | Made with <span class="heart">❤️</span> for global traders</p>
+                <p class="offline-badge" id="offlineBadge" style="display: none;">📡 Offline Mode - Using cached rates</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
